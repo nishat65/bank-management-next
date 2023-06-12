@@ -1,0 +1,6 @@
+.drawer {
+    height: 100%;
+    width: 25%;
+    border-right: 0.15rem solid #eee;
+    padding: 2rem;
+}
