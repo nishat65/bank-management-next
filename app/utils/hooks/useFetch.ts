@@ -1,3 +1,4 @@
+'use client'
 import axios, { AxiosResponse } from 'axios'
 import { useState } from 'react'
 import { baseURL } from '../constant'
@@ -7,11 +8,15 @@ export default function useClientFetch(apiEndpoint: string) {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null) as any
 
-    async function getRequest() {
+    async function getRequest(headers = {}) {
         const url = `${baseURL}${apiEndpoint}`
         setLoading(true)
         try {
-            const res: AxiosResponse<any> = await axios.get(url)
+            const res: AxiosResponse<any> = await axios.get(url, {
+                headers: {
+                    ...headers
+                }
+            })
             setData(res.data)
         } catch (error) {
             console.log(error)
@@ -28,7 +33,6 @@ export default function useClientFetch(apiEndpoint: string) {
             const res: AxiosResponse<any> = await axios.post(url, data)
             setData(res.data)
         } catch (error) {
-            console.log(error)
             setError(error)
         } finally {
             setLoading(false)

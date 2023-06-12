@@ -1,5 +1,6 @@
 'use client'
 import { createPortal } from 'react-dom'
+import { useEffect } from 'react'
 import { useGoogleLogin } from '@react-oauth/google'
 import { FcGoogle } from 'react-icons/fc'
 import { AiOutlineTwitter } from 'react-icons/ai'
@@ -48,7 +49,7 @@ export default function LoginForm() {
                     given_name: data.given_name,
                     family_name: data.family_name,
                     name: data.name,
-                }).then((res) => {
+                }).then(() => {
                     router.push('/home')
                 })
             })
@@ -56,6 +57,11 @@ export default function LoginForm() {
         onError: (error) => console.log(error),
         flow: 'implicit',
     })
+
+    useEffect(() => {
+        if (data) localStorage.setItem('access_token', data.access)
+        if (gData) localStorage.setItem('access_token', gData.access)
+    }, [data, gData])
 
     return (
         <section className="flex h-full w-full">
@@ -83,9 +89,8 @@ export default function LoginForm() {
                                 value={values.email}
                                 name="email"
                                 onChange={handleChange}
-                                className={`h-20 w-full rounded-3xl border-2 border-emerald-700 text-3xl p-3 ${
-                                    error.email && 'error-outline'
-                                }`}
+                                className={`h-20 w-full rounded-3xl border-2 border-emerald-700 text-3xl p-3 ${error.email && 'error-outline'
+                                    }`}
                                 type="text"
                             />
                             {error.email && (
@@ -99,9 +104,8 @@ export default function LoginForm() {
                                 value={values.password}
                                 onChange={handleChange}
                                 placeholder="Password"
-                                className={`h-20 w-full rounded-3xl border-2 border-emerald-700 text-3xl p-3 ${
-                                    error.password && 'error-outline'
-                                }`}
+                                className={`h-20 w-full rounded-3xl border-2 border-emerald-700 text-3xl p-3 ${error.password && 'error-outline'
+                                    }`}
                             />
                             {error.password && (
                                 <p className="error">{error.password}</p>
@@ -120,7 +124,7 @@ export default function LoginForm() {
                             onClick={handleSubmit}
                             className="bg-emerald-700 h-full w-full text-3xl p-4 rounded-3xl text-white"
                         >
-                            {!loading || !gLoading ? 'Login' : <Loading />}
+                            {!loading ? 'Login' : <Loading />}
                         </button>
                     </div>
                     <div>
@@ -133,14 +137,6 @@ export default function LoginForm() {
                                 onClick={() => login()}
                             >
                                 <FcGoogle className="text-4xl" />
-                                {/* <GoogleLogin
-                                    onSuccess={credentialResponse => {
-                                        console.log(credentialResponse);
-                                    }}
-                                    onError={() => {
-                                        console.log('Login Failed');
-                                    }}
-                                />; */}
                             </div>
                             <div className="border p-4 rounded-2xl cursor-pointer">
                                 <AiOutlineTwitter className="text-4xl text-blue-500" />
