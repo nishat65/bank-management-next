@@ -14,7 +14,6 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
         else router.replace('/login')
     }, [])
 
-
     return (
         <AuthContext.Provider value={isAuthenticated}>
             {children}

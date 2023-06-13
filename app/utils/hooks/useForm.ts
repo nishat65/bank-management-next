@@ -49,7 +49,7 @@ function useForm(props: IProps) {
                 const response = await api()
                 return response
             } catch (error) {
-                throw new Error('API request failed')
+                return error
             }
         }
     }

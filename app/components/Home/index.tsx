@@ -1,16 +1,13 @@
 'use client'
 import { useEffect } from 'react'
-import axios from 'axios'
-import Layout from "../shared/Layout"
+import Layout from '../shared/Layout'
 import useClientFetch from '@/app/utils/hooks/useFetch'
 import AuthProvider from '@/app/utils/provider/AuthContext'
+import DashboardTable from './Dashboard/Table'
+import { columns } from '@/app/components/Home/Dashboard/Table/header'
 
 export default function Home() {
-    const {
-        data,
-        loading,
-        getRequest,
-    } = useClientFetch('users/')
+    const { data, loading, getRequest } = useClientFetch('users/')
 
     useEffect(() => {
         const token = localStorage.getItem('access_token')
@@ -23,7 +20,11 @@ export default function Home() {
     return (
         <AuthProvider>
             <Layout>
-                <div>Home Page</div>
+                <DashboardTable
+                    data={data?.data}
+                    loading={loading}
+                    columns={columns}
+                />
             </Layout>
         </AuthProvider>
     )

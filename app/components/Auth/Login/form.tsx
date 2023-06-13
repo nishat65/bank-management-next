@@ -1,6 +1,5 @@
 'use client'
-import { createPortal } from 'react-dom'
-import { useEffect } from 'react'
+import { useEffect, useContext } from 'react'
 import { useGoogleLogin } from '@react-oauth/google'
 import { FcGoogle } from 'react-icons/fc'
 import { AiOutlineTwitter } from 'react-icons/ai'
@@ -14,13 +13,13 @@ import LoginImage from 'app/assets/login.svg'
 import useForm from '@/app/utils/hooks/useForm'
 import useClientFetch from '@/app/utils/hooks/useFetch'
 import Loading from '@/app/components/shared/Loading/index'
-import ToastMessage from '@/app/components/shared/Toast/index'
+import { ToastContext } from '@/app/utils/provider/ToastContext'
 import styles from 'app/login/login.module.css'
 
 export default function LoginForm() {
     const router = useRouter()
+    const toast = useContext(ToastContext) as any
     const { data, loading, postRequest } = useClientFetch('auth/login/')
-
     const {
         data: gData,
         loading: gLoading,
@@ -34,7 +33,9 @@ export default function LoginForm() {
                 email: values.email,
                 password: values.password,
             }).then(() => {
-                router.push('/home')
+                setTimeout(() => {
+                    router.push('/home')
+                }, 500)
             }),
     })
 
@@ -50,7 +51,9 @@ export default function LoginForm() {
                     family_name: data.family_name,
                     name: data.name,
                 }).then(() => {
-                    router.push('/home')
+                    setTimeout(() => {
+                        router.push('/home')
+                    }, 500)
                 })
             })
         },
@@ -62,6 +65,11 @@ export default function LoginForm() {
         if (data) localStorage.setItem('access_token', data.access)
         if (gData) localStorage.setItem('access_token', gData.access)
     }, [data, gData])
+
+    useEffect(() => {
+        if (data?.message) toast.success(data?.message)
+        if (gData?.message) toast.success(gData?.message)
+    }, [data, gData, toast])
 
     return (
         <section className="flex h-full w-full">
@@ -82,15 +90,16 @@ export default function LoginForm() {
                             Start managing your finance faster and better
                         </p>
                     </div>
-                    <div className="flex flex-col gap-2 w-4/6 items-center justify-center gap-8">
+                    <div className="flex flex-col w-4/6 items-center justify-center gap-8">
                         <div className="flex flex-col gap-2 w-full">
                             <input
                                 placeholder="Email"
                                 value={values.email}
                                 name="email"
                                 onChange={handleChange}
-                                className={`h-20 w-full rounded-3xl border-2 border-emerald-700 text-3xl p-3 ${error.email && 'error-outline'
-                                    }`}
+                                className={`h-20 w-full rounded-3xl border-2 border-emerald-700 text-3xl p-3 ${
+                                    error.email && 'error-outline'
+                                }`}
                                 type="text"
                             />
                             {error.email && (
@@ -104,8 +113,9 @@ export default function LoginForm() {
                                 value={values.password}
                                 onChange={handleChange}
                                 placeholder="Password"
-                                className={`h-20 w-full rounded-3xl border-2 border-emerald-700 text-3xl p-3 ${error.password && 'error-outline'
-                                    }`}
+                                className={`h-20 w-full rounded-3xl border-2 border-emerald-700 text-3xl p-3 ${
+                                    error.password && 'error-outline'
+                                }`}
                             />
                             {error.password && (
                                 <p className="error">{error.password}</p>
@@ -158,11 +168,6 @@ export default function LoginForm() {
                     </div>
                 </div>
             </div>
-            {data?.message &&
-                createPortal(
-                    <ToastMessage message={data?.message} show={true} />,
-                    document.body
-                )}
         </section>
     )
 }

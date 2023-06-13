@@ -1,5 +1,6 @@
 'use client'
 import { GoogleOAuthProvider } from '@react-oauth/google'
+import ToastProvider from '@/app/utils/provider/ToastContext'
 import LoginForm from './form'
 
 export default function Login() {
@@ -7,7 +8,9 @@ export default function Login() {
         <GoogleOAuthProvider
             clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID as string}
         >
-            <LoginForm />
+            <ToastProvider>
+                <LoginForm />
+            </ToastProvider>
         </GoogleOAuthProvider>
     )
 }

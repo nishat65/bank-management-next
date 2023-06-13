@@ -11,7 +11,8 @@ export default function SideBar() {
 
     function activePath(path: string) {
         const pathRegex = new RegExp(path)
-        if (pathName.match(pathRegex)) return `rounded-2xl text-white bg-${commonColor.primary}`
+        if (pathName.match(pathRegex))
+            return `rounded-2xl text-white bg-${commonColor.primary}`
         else return `text-${commonColor.primary}`
     }
 
@@ -22,12 +23,14 @@ export default function SideBar() {
                 {ROUTES_CONFIG.map((item) => {
                     return (
                         <li
-                            className={`cursor-pointer flex items-center gap-4 pl-6 py-3 ${activePath(item.pathName)}`}
+                            className={`cursor-pointer flex items-center gap-4 pl-6 py-3 ${activePath(
+                                item.pathName
+                            )}`}
                             key={item.id}
                             onClick={() => router.replace(item.pathName)}
                         >
-                            <div className='text-3xl'>{item.icon}</div>
-                            <div className='text-3xl font-light'>
+                            <div className="text-3xl">{item.icon}</div>
+                            <div className="text-3xl font-light">
                                 {item.name}
                             </div>
                         </li>
