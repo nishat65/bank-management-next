@@ -22,15 +22,16 @@ function Table(props: {
 
     if (!data) return <div>Loading</div>
 
-    if (!data.length) tableRow = (
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td>No data available!</td>
-        </tr>
-    )
+    if (!data.length)
+        tableRow = (
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>No data available!</td>
+            </tr>
+        )
 
     return (
         <>
@@ -43,29 +44,31 @@ function Table(props: {
                                     {header.isPlaceholder
                                         ? null
                                         : flexRender(
-                                            header.column.columnDef.header,
-                                            header.getContext()
-                                        )}
+                                              header.column.columnDef.header,
+                                              header.getContext()
+                                          )}
                                 </th>
                             ))}
                         </tr>
                     ))}
                 </thead>
                 <tbody>
-                    {!tableRow ? table?.getRowModel()?.rows.map((row) => (
-                        <tr key={row.id}>
-                            {row.getVisibleCells().map((cell) => {
-                                return (
-                                    <td key={cell.id}>
-                                        {flexRender(
-                                            cell.column.columnDef.cell,
-                                            cell.getContext()
-                                        )}
-                                    </td>
-                                )
-                            })}
-                        </tr>
-                    )) : tableRow}
+                    {!tableRow
+                        ? table?.getRowModel()?.rows.map((row) => (
+                              <tr key={row.id}>
+                                  {row.getVisibleCells().map((cell) => {
+                                      return (
+                                          <td key={cell.id}>
+                                              {flexRender(
+                                                  cell.column.columnDef.cell,
+                                                  cell.getContext()
+                                              )}
+                                          </td>
+                                      )
+                                  })}
+                              </tr>
+                          ))
+                        : tableRow}
                 </tbody>
                 <tfoot>
                     {table.getFooterGroups()?.map((footerGroup) => (
@@ -75,9 +78,9 @@ function Table(props: {
                                     {header.isPlaceholder
                                         ? null
                                         : flexRender(
-                                            header.column.columnDef.footer,
-                                            header.getContext()
-                                        )}
+                                              header.column.columnDef.footer,
+                                              header.getContext()
+                                          )}
                                 </th>
                             ))}
                         </tr>

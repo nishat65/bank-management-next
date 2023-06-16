@@ -5,7 +5,6 @@ export const metadata = {
     description: 'Bank dashboard home page for admin to view tables of users!',
 }
 
-
 export default function HomePage() {
     return <Home />
 }

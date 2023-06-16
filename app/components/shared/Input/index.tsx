@@ -2,8 +2,7 @@ interface IProps
     extends React.DetailedHTMLProps<
         React.InputHTMLAttributes<HTMLInputElement>,
         HTMLInputElement
-    > {
-}
+    > {}
 
 function Input(props: IProps) {
     const { className, ...rest } = props
