@@ -1,4 +1,3 @@
-import { useMemo } from 'react'
 import {
     flexRender,
     getCoreRowModel,
@@ -18,7 +17,21 @@ function Table(props: {
         getCoreRowModel: getCoreRowModel(),
         autoResetAll: true,
     })
+
+    let tableRow: React.ReactNode | undefined
+
     if (!data) return <div>Loading</div>
+
+    if (!data.length) tableRow = (
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>No data available!</td>
+        </tr>
+    )
+
     return (
         <>
             <table className={className}>
@@ -30,16 +43,16 @@ function Table(props: {
                                     {header.isPlaceholder
                                         ? null
                                         : flexRender(
-                                              header.column.columnDef.header,
-                                              header.getContext()
-                                          )}
+                                            header.column.columnDef.header,
+                                            header.getContext()
+                                        )}
                                 </th>
                             ))}
                         </tr>
                     ))}
                 </thead>
                 <tbody>
-                    {table?.getRowModel()?.rows.map((row) => (
+                    {!tableRow ? table?.getRowModel()?.rows.map((row) => (
                         <tr key={row.id}>
                             {row.getVisibleCells().map((cell) => {
                                 return (
@@ -52,7 +65,7 @@ function Table(props: {
                                 )
                             })}
                         </tr>
-                    ))}
+                    )) : tableRow}
                 </tbody>
                 <tfoot>
                     {table.getFooterGroups()?.map((footerGroup) => (
@@ -62,9 +75,9 @@ function Table(props: {
                                     {header.isPlaceholder
                                         ? null
                                         : flexRender(
-                                              header.column.columnDef.footer,
-                                              header.getContext()
-                                          )}
+                                            header.column.columnDef.footer,
+                                            header.getContext()
+                                        )}
                                 </th>
                             ))}
                         </tr>

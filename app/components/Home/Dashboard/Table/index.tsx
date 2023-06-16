@@ -6,7 +6,7 @@ const { primary } = commonColor
 
 function DashboardTable(props: { data: any; columns: any; loading: boolean }) {
     return (
-        <section className="h-2/4 w-full">
+        <section className="min-h-[20%] h-fit w-full">
             <Table
                 {...props}
                 className={`${styles['dashboard-table']} h-full w-full text-left`}
