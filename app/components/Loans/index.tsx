@@ -1,13 +1,14 @@
 'use client'
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import Layout from '../shared/Layout'
 import useClientFetch from '@/app/utils/hooks/useFetch'
 import AuthProvider from '@/app/utils/provider/AuthContext'
 import Pagination from '@/app/components/shared/Pagination'
-import DashboardTable from './Dashboard/AllUsersTable'
-import { columns } from '@/app/components/Home/Dashboard/AllUsersTable/header'
+import LoansTable from './LoansTable'
+import { columns } from './LoansTable/header'
 import Input from '@/app/components/shared/Input'
 import useForm from '@/app/utils/hooks/useForm'
+import { ILoans } from '@/app/utils/types'
 
 export default function Home() {
     const [values, errors, handleChange, handleSubmit] = useForm({
@@ -16,8 +17,23 @@ export default function Home() {
         },
     })
     const { data, loading, getRequest } = useClientFetch(
-        `users/?email=${values.search}`
+        `loans/admin/?email=${values.search}`
     )
+
+    const dataList: ILoans[] = useMemo(() => data ? data.results.map((item: ILoans) => {
+        return {
+            id: item.id,
+            "customer.email": item.customer.email,
+            "customer.date_joined": item.customer.date_joined,
+            'amount': item.amount,
+            'status': item.status,
+            // 'manager.first_name': item.manager.first_name,
+            // 'manager.last_name': item.manager.last_name,
+            'agent.email': item.agent.email,
+            // 'agent.first_name': item.agent.email,
+            // 'agent.last_name': item.agent.id
+        }
+    }) : data, [data])
 
     useEffect(() => {
         const token = localStorage.getItem('access_token')
@@ -39,8 +55,8 @@ export default function Home() {
                         onChange={handleChange}
                     />
                 </section>
-                <DashboardTable
-                    data={data?.results}
+                <LoansTable
+                    data={dataList}
                     loading={loading}
                     columns={columns}
                 />
