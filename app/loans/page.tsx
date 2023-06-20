@@ -5,11 +5,8 @@ export const metadata = {
     description: 'Loan page for admin to loan related information!',
 }
 
-
 function LoanPage() {
-    return (
-        <Loans />
-    )
+    return <Loans />
 }
 
 export default LoanPage

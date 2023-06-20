@@ -1,3 +1,4 @@
+import { useRouter } from 'next/navigation'
 import { createColumnHelper } from '@tanstack/react-table'
 import { FiTrash, FiEdit2 } from 'react-icons/fi'
 
@@ -16,17 +17,15 @@ function statusCapsule(value: string) {
 export const columns = [
     columnHelper.accessor('id', {
         header: 'Id',
-        cell: (info) => info.getValue(),
+        cell: (info) => <div>{info.getValue()}</div>,
     }),
     columnHelper.accessor('customer.email', {
         header: 'Customer Email',
         cell: (info: any) => <div>{info.row.original['customer.email']}</div>,
-
     }),
     columnHelper.accessor('customer.date_joined', {
         header: 'Customer Date Joined',
-        cell: (info: any) => info.row.original['customer.date_joined']
-        ,
+        cell: (info: any) => info.row.original['customer.date_joined'],
     }),
     columnHelper.accessor('amount', {
         header: 'Amount',
@@ -34,7 +33,15 @@ export const columns = [
     }),
     columnHelper.accessor('status', {
         header: 'Status',
-        cell: (info) => <div className={`rounded-lg bg-emerald-300 text-center ${statusCapsule(info.getValue())}`} >{info.getValue()}</div>,
+        cell: (info) => (
+            <div
+                className={`rounded-lg bg-emerald-300 text-center ${statusCapsule(
+                    info.getValue()
+                )}`}
+            >
+                {info.getValue()}
+            </div>
+        ),
     }),
     // columnHelper.accessor('manager.first_name', {
     //     header: 'Manager First Name',
